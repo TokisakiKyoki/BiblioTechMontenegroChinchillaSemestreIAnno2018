@@ -107,6 +107,17 @@ public class RequestAudiovisualFile {
             }return a;
             
         }//end method
+    public int searchDays(String ID, int days) throws IOException{
+        RequestAudiovisual ravTemp = this.getrav(0);
+        int a = 0;
+            for (int i = 0; i <+ this.regsQuantity; i++) {
+                ravTemp = this.getrav(i);
+                if (ravTemp.getId().equals(ID)) {
+                    a = ravTemp.getDays();
+                }
+            }return a;
+            
+        }//end method
     
     public boolean deleteRecord(String ID) throws IOException{
             RequestAudiovisual ravTemp = this.getrav(0);
@@ -116,6 +127,20 @@ public class RequestAudiovisualFile {
                 
                 if (ravTemp.getId().equals(ID)) {
                     ravTemp.setId("Entregado");
+                    return this.putValue(i, ravTemp);
+                }
+            }
+            return false;
+        }//end method
+    
+    public boolean penaltyRecord(String ID) throws IOException{
+            RequestAudiovisual ravTemp = this.getrav(0);
+            
+            for (int i = 0; i <+ this.regsQuantity; i++) {
+                ravTemp = this.getrav(i);
+                
+                if (ravTemp.getId().equals(ID)) {
+                    ravTemp.setId("Multa Pendiente");
                     return this.putValue(i, ravTemp);
                 }
             }
@@ -136,5 +161,11 @@ public class RequestAudiovisualFile {
         return carsArray;
     }
     
+    public int penalty(Date dateToday, Date dateReq){
+        long diferenciaEn_ms = dateReq.getTime() - dateToday.getTime();
+        long dias = diferenciaEn_ms / (1000 * 60 * 60 * 24);
+        return (int) dias;
+        
+    }
     
 }

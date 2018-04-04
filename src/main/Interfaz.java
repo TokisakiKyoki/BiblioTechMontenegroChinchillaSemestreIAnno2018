@@ -14,6 +14,8 @@ import file.RequestBooksFile;
 import file.StudentFile;
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -22,10 +24,11 @@ import javafx.scene.image.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-
+import java.util.Date;
+import java.util.Formatter;
 
 public class Interfaz extends javax.swing.JFrame {
-    
+    Date date = new Date();
     File file1 = new File("./student.dat");
     File file2 = new File("./book.dat");
     File file3 = new File("./audiovisual.dat");
@@ -49,6 +52,9 @@ public class Interfaz extends javax.swing.JFrame {
     
     ArrayList<RequestAudiovisual> myArrayList = ravFile.getAllRAV();
     ArrayList<RequestBooks> myArrayList2 = rbFile.getAllRB();
+    
+    SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yy");
+    Date today = new Date();
     
     Student s;
     boolean c;
@@ -251,7 +257,9 @@ public class Interfaz extends javax.swing.JFrame {
         
     }
     
-    private void addRAV() throws IOException{
+    private void addRAV() throws IOException, ParseException{
+        
+        
         int cant = Integer.parseInt(reqavailable.getText());
         RequestAudiovisual rav = new RequestAudiovisual(receiveIDU.getText(), jTextSearch1.getText(), Integer.parseInt((String)numDays.getSelectedItem()));
             if (cant>0) {
@@ -279,14 +287,34 @@ public class Interfaz extends javax.swing.JFrame {
         
     }
     
-    private void returnsRAV() throws IOException{
+    private void returnsRAV() throws IOException, ParseException{
+        String strFecha = dateReq.getText();
+        Date fecha = null;
+        try {
+
+        fecha = formatDate.parse(strFecha);
+        
+        } catch (ParseException ex) {
+
+        ex.printStackTrace();
+
+        }
+        int day = ravFile.penalty(fecha, formatDate.parse(dateToday.getText()));
+        System.out.println(day);
         if (returnsIDU1.getText().equals("")) {
             noexistReq.setText("El usuario no tiene devoluciones pendientes");
         }else{
             boolean rav = ravFile.buscar(returnsIDU1.getText());
         if (rav == true) {
-            ravFile.deleteRecord(returnsIDU1.getText());
-            audiovisualFile.aumentar(returnsIDU1.getText());
+            int a = ravFile.searchDays(returnsIDU1.getText(), day);
+            if (day>a) {
+                ravFile.penaltyRecord(returnsIDU1.getText());
+                audiovisualFile.aumentar(returnsIDU1.getText());
+            }else{
+                ravFile.deleteRecord(returnsIDU1.getText());
+                audiovisualFile.aumentar(returnsIDU1.getText());
+            }
+            System.out.println(a);
         }else{
             noexistReq.setText("El usuario no tiene devoluciones pendientes");
         }
@@ -306,6 +334,10 @@ public class Interfaz extends javax.swing.JFrame {
         }
         limpiaTabla();
         readRBData();
+    }
+    
+    private void penalty() throws IOException{
+        PenaltyFile pF = new PenaltyFile(file6);
     }
     
     /**
@@ -387,6 +419,7 @@ public class Interfaz extends javax.swing.JFrame {
         jLabel21 = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
         noexistAV = new javax.swing.JLabel();
+        dateReq = new javax.swing.JTextField();
         jLabel17 = new javax.swing.JLabel();
         toBooks1 = new javax.swing.JRadioButton();
         toOther1 = new javax.swing.JRadioButton();
@@ -411,6 +444,7 @@ public class Interfaz extends javax.swing.JFrame {
         returnsIDU1 = new javax.swing.JTextField();
         jLabel28 = new javax.swing.JLabel();
         noexistReq = new javax.swing.JLabel();
+        dateToday = new javax.swing.JTextField();
         DB = new javax.swing.JPanel();
         jButtonReturn1 = new javax.swing.JButton();
         returnsIDU = new javax.swing.JTextField();
@@ -1043,6 +1077,8 @@ public class Interfaz extends javax.swing.JFrame {
                             .addGroup(OtherMaterialLayout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel22)
+                                .addGap(40, 40, 40)
+                                .addComponent(dateReq, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(OtherMaterialLayout.createSequentialGroup()
                         .addGroup(OtherMaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1075,7 +1111,8 @@ public class Interfaz extends javax.swing.JFrame {
                 .addGroup(OtherMaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(numDays, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel21)
-                    .addComponent(jLabel22))
+                    .addComponent(jLabel22)
+                    .addComponent(dateReq, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jToggleButton1)
                 .addGap(19, 19, 19))
@@ -1332,7 +1369,10 @@ public class Interfaz extends javax.swing.JFrame {
                         .addGap(33, 33, 33)
                         .addGroup(DAVLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel28)
-                            .addComponent(returnsIDU1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, DAVLayout.createSequentialGroup()
+                                .addComponent(returnsIDU1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(61, 61, 61)
+                                .addComponent(dateToday, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(noexistReq, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(58, Short.MAX_VALUE))
         );
@@ -1342,12 +1382,14 @@ public class Interfaz extends javax.swing.JFrame {
                 .addGap(31, 31, 31)
                 .addComponent(jLabel28)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(returnsIDU1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(DAVLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(dateToday)
+                    .addComponent(returnsIDU1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(noexistReq, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonReturn)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(95, Short.MAX_VALUE))
         );
 
         DB.setBackground(new java.awt.Color(255, 255, 153));
@@ -1840,6 +1882,8 @@ public class Interfaz extends javax.swing.JFrame {
             addRAV();
         } catch (IOException ex) {
             Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jToggleButton1ActionPerformed
 
@@ -1855,6 +1899,8 @@ public class Interfaz extends javax.swing.JFrame {
         try {
             returnsRAV();
         } catch (IOException ex) {
+            Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
             Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButtonReturnActionPerformed
@@ -1965,6 +2011,8 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JToggleButton btn_search2;
     private javax.swing.JToggleButton check;
     private javax.swing.JToggleButton check1;
+    private javax.swing.JTextField dateReq;
+    private javax.swing.JTextField dateToday;
     private javax.swing.JToggleButton jButtonAdd;
     private javax.swing.JButton jButtonReturn;
     private javax.swing.JButton jButtonReturn1;

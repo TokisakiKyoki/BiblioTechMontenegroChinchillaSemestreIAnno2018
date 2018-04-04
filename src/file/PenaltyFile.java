@@ -5,7 +5,11 @@ import domain.Returns;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Formatter;
 
 
 public class PenaltyFile {
@@ -13,7 +17,7 @@ public class PenaltyFile {
     private int regsQuantity;
     private int regSize;
     private String myFilePath;
-    Date fecha = new Date();
+    Date today = new Date();
     
     //constructor
     public PenaltyFile(File file) throws IOException{
@@ -89,6 +93,8 @@ public class PenaltyFile {
             return null;
         }
     }//end method
+    
+    
     
     
 }
