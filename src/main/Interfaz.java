@@ -1510,9 +1510,9 @@ public class Interfaz extends javax.swing.JFrame {
         Font.setPreferredSize(new java.awt.Dimension(742, 379));
 
         jLabel29.setBackground(new java.awt.Color(255, 255, 102));
-        jLabel29.setIcon(new javax.swing.ImageIcon("C:\\Users\\TokisakiKuro\\Documents\\NetBeansProjects\\U\\BiblioTechMontenegroChinchillaSemestreIAnno2018\\src\\resources\\Logo.jpg")); // NOI18N
+        jLabel29.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/Logo.jpg"))); // NOI18N
 
-        jLabel30.setIcon(new javax.swing.ImageIcon("C:\\Users\\TokisakiKuro\\Documents\\NetBeansProjects\\U\\BiblioTechMontenegroChinchillaSemestreIAnno2018\\src\\resources\\Library.png")); // NOI18N
+        jLabel30.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/Library.png"))); // NOI18N
 
         javax.swing.GroupLayout FontLayout = new javax.swing.GroupLayout(Font);
         Font.setLayout(FontLayout);
