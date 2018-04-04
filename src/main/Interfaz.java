@@ -332,10 +332,6 @@ public class Interfaz extends javax.swing.JFrame {
         readRBData();
     }
     
-    private void penalty() throws IOException{
-        PenaltyFile pF = new PenaltyFile(file6);
-    }
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
