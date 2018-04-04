@@ -8,7 +8,6 @@ import domain.RequestBooks;
 import domain.Student;
 import file.AudiovisualFile;
 import file.BooksFile;
-import file.PenaltyFile;
 import file.RequestAudiovisualFile;
 import file.RequestBooksFile;
 import file.StudentFile;
@@ -40,7 +39,6 @@ public class Interfaz extends javax.swing.JFrame {
     AudiovisualFile audiovisualFile = new AudiovisualFile(file3);
     RequestAudiovisualFile ravFile = new RequestAudiovisualFile(file4);
     RequestBooksFile rbFile = new RequestBooksFile(file5);
-    PenaltyFile pFile = new PenaltyFile(file6);
     
     String [] titlesBooks = {"ISBN","Título","Autor","Año","Disponible"};
     String [] titlesAudiovisuals = {"Id","Tipo","Compañia","Disponible"};
@@ -300,7 +298,6 @@ public class Interfaz extends javax.swing.JFrame {
 
         }
         int day = ravFile.penalty(fecha, formatDate.parse(dateToday.getText()));
-        System.out.println(day);
         if (returnsIDU1.getText().equals("")) {
             noexistReq.setText("El usuario no tiene devoluciones pendientes");
         }else{
@@ -314,7 +311,6 @@ public class Interfaz extends javax.swing.JFrame {
                 ravFile.deleteRecord(returnsIDU1.getText());
                 audiovisualFile.aumentar(returnsIDU1.getText());
             }
-            System.out.println(a);
         }else{
             noexistReq.setText("El usuario no tiene devoluciones pendientes");
         }
