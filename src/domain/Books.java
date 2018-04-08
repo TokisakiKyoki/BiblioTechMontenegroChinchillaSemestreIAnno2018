@@ -10,12 +10,32 @@ public class Books extends Material {
     private int edition;
     private int year;
 
+    //Constructores
+    public Books() {
+        super();
+        this.isbn = "";
+        this.title = "";
+        this.author = "";
+        this.edition = 0;
+        this.year = 0;
+    }
+
     public Books(String isbn, String title, String author, int edition, int year , int available) {
         super(available);
         this.isbn = isbn;
         this.title = title;
         this.author = author;
         this.edition = edition;
+        this.year = year;
+    }
+
+    //Getter and setter
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
     }
 
     public String getIsbn() {

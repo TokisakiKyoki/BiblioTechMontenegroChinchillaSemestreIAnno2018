@@ -52,7 +52,7 @@ public class RequestBooksFile {
                 randomAccessFile.writeUTF(rbToInsert.getIDU());
                 randomAccessFile.writeUTF(rbToInsert.getIsbn());
                 randomAccessFile.writeInt(rbToInsert.getDays());
-                
+                randomAccessFile.writeUTF(rbToInsert.getDate());
                 return true;
             }
             
@@ -83,11 +83,13 @@ public class RequestBooksFile {
             booksTemp.setIDU(randomAccessFile.readUTF());
             booksTemp.setIsbn(randomAccessFile.readUTF());
             booksTemp.setDays(randomAccessFile.readInt());
-            if (booksTemp.getIDU().equals("deleted")) {
+            booksTemp.setDate(randomAccessFile.readUTF());
+            
+            if (booksTemp.getIsbn().equals("")) {
                     return null;
-                }else{
+            }else{
                     return booksTemp;
-                }
+            }
         }
         else{
             System.err.println("1003 - position is out of bounds");
@@ -95,28 +97,65 @@ public class RequestBooksFile {
         }
     }//end method
     
-    public boolean buscar(String IDU) throws IOException{
-        RequestBooks rbTemp;
-            
+    public boolean search(String ISBN) throws IOException{
+        RequestBooks rbTemp = this.getrb(0);
+        boolean a = false;
             for (int i = 0; i <+ this.regsQuantity; i++) {
                 rbTemp = this.getrb(i);
-                
-                if (rbTemp.getIDU().equals(IDU)) {
-                    return true;
+                if (rbTemp.getIsbn().equals(ISBN)) {
+                    a=true;
                 }
-            }return false;
+            }return a;
+            
+        }//end method
+        
+    public String searchDate(String ISBN) throws IOException{
+        RequestBooks rbTemp = this.getrb(0);
+        String a = "";
+            for (int i = 0; i <+ this.regsQuantity; i++) {
+                rbTemp = this.getrb(i);
+                if (rbTemp.getIsbn().equals(ISBN)) {
+                    a=rbTemp.getDate();
+                }
+            }return a;
+            
+        }//end method
+        
+    public int searchDays(String ISBN, int days) throws IOException{
+        RequestBooks rbTemp = this.getrb(0);
+        int a = 0;
+            for (int i = 0; i <+ this.regsQuantity; i++) {
+                rbTemp = this.getrb(i);
+                if (rbTemp.getIsbn().equals(ISBN)) {
+                    a = rbTemp.getDays();
+                }
+            }return a;
             
         }//end method
     
-    public boolean deleteRecord(String IDU) throws IOException{
+    public boolean deleteRecord(String ISBN) throws IOException{
             RequestBooks rbTemp = this.getrb(0);
             
             for (int i = 0; i <+ this.regsQuantity; i++) {
                 rbTemp = this.getrb(i);
                 
-                if (rbTemp.getIDU().equals(IDU)) {
-                    rbTemp.setIDU("deleted");
+                if (rbTemp.getIsbn().equals(ISBN)) {
+                    rbTemp.setIsbn("Entregado");
                     return this.putValue(i, rbTemp);
+                }
+            }
+            return false;
+        }//end method
+    
+    public boolean penaltyRecord(String ISBN) throws IOException{
+            RequestBooks rBTemp = this.getrb(0);
+            
+            for (int i = 0; i <+ this.regsQuantity; i++) {
+                rBTemp = this.getrb(i);
+                
+                if (rBTemp.getIsbn().equals(ISBN)) {
+                    rBTemp.setIsbn("Multa Pendiente");
+                    return this.putValue(i, rBTemp);
                 }
             }
             return false;
@@ -133,6 +172,13 @@ public class RequestBooksFile {
             }
         }//end for
         return carsArray;
+    }
+    
+    public int penalty(Date dateToday, Date dateReq){
+        long diferenciaEn_ms = dateReq.getTime()- dateToday.getTime();
+        long dias = diferenciaEn_ms / (1000 * 60 * 60 * 24);
+        return (int) dias;
+        
     }
     
 }

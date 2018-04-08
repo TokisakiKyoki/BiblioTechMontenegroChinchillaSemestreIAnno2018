@@ -9,6 +9,9 @@ public class Material implements Serializable {
     //atributos
     private int available;
 
+    public Material() {
+    }
+    
     public Material(int available) {
         this.available = available;
     }

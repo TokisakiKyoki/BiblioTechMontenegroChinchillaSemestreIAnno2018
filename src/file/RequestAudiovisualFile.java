@@ -1,9 +1,7 @@
 
 package file;
 
-import domain.Audiovisual;
 import domain.RequestAudiovisual;
-import domain.Student;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -53,6 +51,7 @@ public class RequestAudiovisualFile {
                 randomAccessFile.writeUTF(ravToInsert.getIDU());
                 randomAccessFile.writeUTF(ravToInsert.getId());
                 randomAccessFile.writeInt(ravToInsert.getDays());
+                randomAccessFile.writeUTF(ravToInsert.getDate());
                 return true;
             }
             
@@ -83,6 +82,7 @@ public class RequestAudiovisualFile {
             audiovisualTemp.setIDU(randomAccessFile.readUTF());
             audiovisualTemp.setId(randomAccessFile.readUTF());
             audiovisualTemp.setDays(randomAccessFile.readInt());
+            audiovisualTemp.setDate(randomAccessFile.readUTF());
             
             if (audiovisualTemp.getId().equals("")) {
                     return null;
@@ -96,7 +96,7 @@ public class RequestAudiovisualFile {
         }
     }//end method
     
-    public boolean buscar(String ID) throws IOException{
+    public boolean search(String ID) throws IOException{
         RequestAudiovisual ravTemp = this.getrav(0);
         boolean a = false;
             for (int i = 0; i <+ this.regsQuantity; i++) {
@@ -105,8 +105,19 @@ public class RequestAudiovisualFile {
                     a=true;
                 }
             }return a;
+    } 
+    public String searchDate(String ID) throws IOException{
+        RequestAudiovisual ravTemp = this.getrav(0);
+        String a = "";
+            for (int i = 0; i <+ this.regsQuantity; i++) {
+                ravTemp = this.getrav(i);
+                if (ravTemp.getId().equals(ID)) {
+                    a=ravTemp.getDate();
+                }
+            }return a;
             
         }//end method
+    
     public int searchDays(String ID, int days) throws IOException{
         RequestAudiovisual ravTemp = this.getrav(0);
         int a = 0;
@@ -162,9 +173,8 @@ public class RequestAudiovisualFile {
     }
     
     public int penalty(Date dateToday, Date dateReq){
-        long diferenciaEn_ms = dateReq.getTime() - dateToday.getTime();
-        long dias = diferenciaEn_ms / (1000 * 60 * 60 * 24);
-        return (int) dias;
+        int dias = (int)((dateReq.getTime() - dateToday.getTime()) / 86400000);
+        return dias;
         
     }
     

@@ -9,11 +9,13 @@ public class RequestAudiovisual {
     private String IDU;
     private int days;
     private String id;
+    private String date;
 
-    public RequestAudiovisual(String IDU, String id , int days) {
+    public RequestAudiovisual(String IDU, String id , int days, String date) {
         this.IDU = IDU;
         this.days = days;
         this.id = id;
+        this.date = date;
     }
 
     public RequestAudiovisual() {
@@ -44,10 +46,20 @@ public class RequestAudiovisual {
     public void setId(String id) {
         this.id = id;
     }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+    
     
     public int sizeInBytes(){
         //retornar la suma en bytes de todos los atributos
         return this.getIDU().length() * 2 +
+               this.getDate().length() * 2 +
                this.getId().length() * 2;
                
     }

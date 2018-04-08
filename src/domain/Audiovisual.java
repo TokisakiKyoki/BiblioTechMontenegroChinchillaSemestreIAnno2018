@@ -7,10 +7,12 @@ package domain;
  */
 public class Audiovisual extends Material {
     
+    //atributos
     private String id;
     private String object;
     private String company;
 
+    //Constructores
     public Audiovisual(int available) {
         super(available);
     }

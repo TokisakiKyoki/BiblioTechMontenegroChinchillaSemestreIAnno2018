@@ -20,8 +20,6 @@ public class StudentFile {
     Date fecha = new Date();
     String anyo = new SimpleDateFormat("yy").format(fecha);
     
-    
-    
     //constructor
     public StudentFile(File file) throws IOException{
         //guardar la ruta del archivo

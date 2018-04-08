@@ -105,8 +105,6 @@ public class AudiovisualFile {
         }
     }//end method
     
-    
-    
     //retornar una lista de carros
     public ArrayList<Audiovisual> getAllAudiovisual() throws IOException{
         ArrayList<Audiovisual> carsArray = new ArrayList<>();
@@ -121,7 +119,7 @@ public class AudiovisualFile {
         return carsArray;
     }
       
-    public int cantidad(String id) throws IOException{
+    public int quantity(String id) throws IOException{
         Audiovisual aTemp;
         int temp=0;
             for (int i = 0; i <+ this.regsQuantity; i++) {
@@ -134,7 +132,7 @@ public class AudiovisualFile {
             
         }//end method
     
-    public Audiovisual buscar(String id) throws IOException{
+    public Audiovisual search(String id) throws IOException{
         Audiovisual aTemp = this.getAudiovisual(0);
             
             for (int i = 0; i <+ this.regsQuantity; i++) {
@@ -150,7 +148,7 @@ public class AudiovisualFile {
             
         }//end method
     
-    public boolean disminuir(String id) throws IOException{
+    public boolean decrease(String id) throws IOException{
         Audiovisual aTemp;
         for (int i = 0; i <+ this.regsQuantity; i++) {
             aTemp = this.getAudiovisual(i);
@@ -161,7 +159,7 @@ public class AudiovisualFile {
         }return false;
     }
     
-    public boolean aumentar(String id) throws IOException{
+    public boolean increase(String id) throws IOException{
         Audiovisual aTemp;
 
         for (int i = 0; i <+ this.regsQuantity; i++) {
@@ -173,8 +171,7 @@ public class AudiovisualFile {
         }return false;
     }
     
-    
-    public boolean editar(Audiovisual audiovisual) throws IOException{
+    public boolean edit(Audiovisual audiovisual) throws IOException{
         Audiovisual aTemp = this.getAudiovisual(0);
 
         for (int i = 0; i <+ this.regsQuantity; i++) {

@@ -2,7 +2,6 @@ package main;
 
 import domain.Audiovisual;
 import domain.Books;
-import domain.Material;
 import domain.RequestAudiovisual;
 import domain.RequestBooks;
 import domain.Student;
@@ -19,12 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.scene.image.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.util.Date;
-import java.util.Formatter;
 
 public class Interfaz extends javax.swing.JFrame {
     Date date = new Date();
@@ -40,9 +37,9 @@ public class Interfaz extends javax.swing.JFrame {
     RequestAudiovisualFile ravFile = new RequestAudiovisualFile(file4);
     RequestBooksFile rbFile = new RequestBooksFile(file5);
     
-    String [] titlesBooks = {"ISBN","Título","Autor","Año","Disponible"};
+    String [] titlesBooks = {"ISBN","Título","Autor","Edición","Año","Disponible"};
     String [] titlesAudiovisuals = {"Id","Tipo","Compañia","Disponible"};
-    String [] titlesRequest = {"Estudiante","ID","Días"};
+    String [] titlesRequest = {"Estudiante","ID","Días","Fecha"};
     DefaultTableModel dtm1 = new DefaultTableModel(null, titlesBooks);
     DefaultTableModel dtm2 = new DefaultTableModel(null, titlesAudiovisuals);
     DefaultTableModel dtm3 = new DefaultTableModel(null, titlesRequest);
@@ -51,7 +48,7 @@ public class Interfaz extends javax.swing.JFrame {
     ArrayList<RequestAudiovisual> myArrayList = ravFile.getAllRAV();
     ArrayList<RequestBooks> myArrayList2 = rbFile.getAllRB();
     
-    SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yy");
+    SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
     Date today = new Date();
     
     Student s;
@@ -74,14 +71,33 @@ public class Interfaz extends javax.swing.JFrame {
         
     }
     
+    public void readBooksData() throws IOException, ClassNotFoundException{
+        
+        String datosb[] = new String[6];
+        List<Books> booksList = booksFile.readBooksFile(file2);
+        
+        for (int i = 0; i < booksList.size(); i++) {
+            datosb[0] = booksList.get(i).getIsbn();
+            datosb[1] = booksList.get(i).getTitle();
+            datosb[2] = booksList.get(i).getAuthor();
+            datosb[3] = Integer.toString(booksList.get(i).getEdition());
+            datosb[4] = Integer.toString(booksList.get(i).getYear());
+            datosb[5] = Integer.toString(booksList.get(i).getAvailable());
+            dtm1.addRow(datosb);
+        }
+        jTable1.setModel(dtm1);
+        
+    }
+    
     public void readRAVData() throws IOException{
         
-        String datos[] = new String[3];
+        String datos[] = new String[4];
         myArrayList = ravFile.getAllRAV();
         for (int i = 0; i < myArrayList.size(); i++) {
             datos[0] = myArrayList.get(i).getIDU();
             datos[1] = myArrayList.get(i).getId();
             datos[2] = Integer.toString(myArrayList.get(i).getDays());
+            datos[3] = myArrayList.get(i).getDate();
             dtm3.addRow(datos);
         }
         jTable1.setModel(dtm3);
@@ -90,12 +106,13 @@ public class Interfaz extends javax.swing.JFrame {
     
     public void readRBData() throws IOException{
         
-        String datos[] = new String[3];
+        String datos[] = new String[4];
         myArrayList2 = rbFile.getAllRB();
         for (int i = 0; i < myArrayList2.size(); i++) {
             datos[0] = myArrayList2.get(i).getIDU();
             datos[1] = myArrayList2.get(i).getIsbn();
             datos[2] = Integer.toString(myArrayList2.get(i).getDays());
+            datos[3] = myArrayList2.get(i).getDate();
             dtm4.addRow(datos);
         }
         jTable1.setModel(dtm4);
@@ -126,6 +143,8 @@ public class Interfaz extends javax.swing.JFrame {
         DB.setVisible(false);
         DAV.setVisible(false);
         Carne1.setVisible(false);
+        ImageMaterial.setVisible(false);
+        ImageStudent.setVisible(false);
     }
 
     //método para ingresar el estudiante
@@ -143,12 +162,13 @@ public class Interfaz extends javax.swing.JFrame {
         jTextAddress.setText("");
     }
     
-    private void addBooks(){
-        int cant = 0;//falta ingresar la cantidad
-        Books b = new Books(jTextID.getText(), jTextTitle.getText(), jTextAuthor.getText(), 
+    private void addBooks() throws ClassNotFoundException{
+        int cant = 1;//falta ingresar la cantidad
+        Books b = new Books(jTextISBN.getText(), jTextTitle.getText(), jTextAuthor.getText(), 
                 Integer.parseInt(jTextEdition.getText()), Integer.parseInt(jTextYear.getText()), cant);
+        booksFile.writeBooksFile(b,file2);
         
-        
+        jTextISBN.setText("");
         jTextTitle.setText("");
         jTextAuthor.setText("");
         jTextYear.setText("");
@@ -156,11 +176,11 @@ public class Interfaz extends javax.swing.JFrame {
     }
     
     private void addAudiovisuals() throws IOException{
-        int cant = audiovisualFile.cantidad(jTextID.getText());
+        int cant = audiovisualFile.quantity(jTextID.getText());
         String audiovisualtype = (String)otherTypes.getSelectedItem();
         Audiovisual av = new Audiovisual(jTextID.getText(), audiovisualtype, jTextCompany.getText(), cant+1);
         if (cant>0) {
-            audiovisualFile.aumentar(jTextID.getText());
+            audiovisualFile.increase(jTextID.getText());
         }else{
             audiovisualFile.addEndRecord(av);
         }
@@ -179,11 +199,11 @@ public class Interfaz extends javax.swing.JFrame {
         Others.setVisible(true);
     }
     
-    private void toBooks2() throws IOException{
+    private void toBooks2() throws IOException, ClassNotFoundException{
         OtherMaterial.setVisible(false);
         Book.setVisible(true);
         limpiaTabla();
-        
+        readBooksData();
     }
     
     private void toOthers2() throws IOException{
@@ -247,69 +267,86 @@ public class Interfaz extends javax.swing.JFrame {
     
     private void searchAudiovisual() throws IOException{
         
-        Audiovisual v = audiovisualFile.buscar(jTextSearch1.getText());
+        Audiovisual v = audiovisualFile.search(jTextSearch1.getText());
         
         reqtype.setText(v.getObject());
         reqcompany.setText(v.getCompany());
         reqavailable.setText(Integer.toString(v.getAvailable()));
         
     }
+    private void searchBooks() throws IOException, ClassNotFoundException{
+        
+        Books b = booksFile.getPerson(jTextSearch2.getText(), file2);
+        
+        jTextField2.setText(b.getTitle());
+        jTextField3.setText(b.getAuthor());
+        jTextField4.setText(Integer.toString(b.getEdition()));
+        jTextField5.setText(Integer.toString(b.getYear()));
+        jTextField6.setText(Integer.toString(b.getAvailable()));
+    }
     
     private void addRAV() throws IOException, ParseException{
-        
-        
         int cant = Integer.parseInt(reqavailable.getText());
-        RequestAudiovisual rav = new RequestAudiovisual(receiveIDU.getText(), jTextSearch1.getText(), Integer.parseInt((String)numDays.getSelectedItem()));
-            if (cant>0) {
+        RequestAudiovisual rav = new RequestAudiovisual(receiveIDU.getText(), jTextSearch1.getText(), 
+                Integer.parseInt((String)numDays.getSelectedItem()), dateReq.getText());
+        if (cant>0) {
             ravFile.addEndRecord(rav);
-            audiovisualFile.disminuir(jTextSearch1.getText());
-            
+            audiovisualFile.decrease(jTextSearch1.getText());
         }else{
             noexistAV.setText("No hay recursos disponibles");
         }
-        Audiovisual v = audiovisualFile.buscar(jTextSearch1.getText());
-        reqavailable.setText(Integer.toString(v.getAvailable()));
         limpiaTabla();
         readAudiovisualData();
+        dateReq.setText("");
         jTextSearch1.setText("");
         reqtype.setText("");
         reqcompany.setText("");
         reqavailable.setText("");
     }
     
-    private void addRB() throws IOException{
-        
-        RequestBooks b = new RequestBooks(receiveIDU.getText(), jTextSearch2.getText(), (int)numDays1.getSelectedItem());
-        rbFile.addEndRecord(b);
+    private void addRB() throws IOException, ClassNotFoundException{
+        int cant = Integer.parseInt(jTextField6.getText());
+        RequestBooks rb = new RequestBooks(receiveIDU.getText(), jTextSearch2.getText(), 
+                Integer.parseInt((String)numDays1.getSelectedItem()), dateReq1.getText());
+        if (cant>0) {
+            rbFile.addEndRecord(rb);
+//            booksFile.disminuir(jTextSearch2.getText(),file2);
+        }else{
+            noexistAV1.setText("No hay recursos disponibles");
+        }
         limpiaTabla();
-        
+        readBooksData(); 
+        dateReq1.setText("");
+        jTextSearch2.setText("");
+        jTextField2.setText("");
+        jTextField3.setText("");
+        jTextField4.setText("");
+        jTextField5.setText("");
+        jTextField6.setText("");
     }
     
     private void returnsRAV() throws IOException, ParseException{
-        String strFecha = dateReq.getText();
+        String strFecha = ravFile.searchDate(returnsIDU1.getText());
         Date fecha = null;
         try {
-
-        fecha = formatDate.parse(strFecha);
-        
+            fecha = formatDate.parse(strFecha);
         } catch (ParseException ex) {
-
         ex.printStackTrace();
-
         }
+        
         int day = ravFile.penalty(fecha, formatDate.parse(dateToday.getText()));
         if (returnsIDU1.getText().equals("")) {
             noexistReq.setText("El usuario no tiene devoluciones pendientes");
         }else{
-            boolean rav = ravFile.buscar(returnsIDU1.getText());
+            boolean rav = ravFile.search(returnsIDU1.getText());
         if (rav == true) {
             int a = ravFile.searchDays(returnsIDU1.getText(), day);
             if (day>a) {
                 ravFile.penaltyRecord(returnsIDU1.getText());
-                audiovisualFile.aumentar(returnsIDU1.getText());
+                audiovisualFile.increase(returnsIDU1.getText());
             }else{
                 ravFile.deleteRecord(returnsIDU1.getText());
-                audiovisualFile.aumentar(returnsIDU1.getText());
+                audiovisualFile.increase(returnsIDU1.getText());
             }
         }else{
             noexistReq.setText("El usuario no tiene devoluciones pendientes");
@@ -320,13 +357,31 @@ public class Interfaz extends javax.swing.JFrame {
         readRAVData();
     }
     
-    private void returnsRB() throws  IOException{
-        boolean rb = rbFile.buscar(returnsIDU.getText());
+    private void returnsRB() throws  IOException, ParseException, ClassNotFoundException{
+        String strFecha = rbFile.searchDate(returnsIDU.getText());
+        Date fecha = null;
+        try {
+            fecha = formatDate.parse(strFecha);
+        } catch (ParseException ex) {
+        ex.printStackTrace();
+        }
+        int day = rbFile.penalty(fecha, formatDate.parse(dateToday1.getText()));
+        if (returnsIDU.getText().equals("")) {
+            noexistReq.setText("El usuario no tiene devoluciones pendientes");
+        }else{
+            boolean rb = rbFile.search(returnsIDU.getText());
         if (rb==true) {
-            rbFile.deleteRecord(returnsIDU.getText());
-            
+            int a = rbFile.searchDays(returnsIDU.getText(), day);
+            if (day>a){
+                rbFile.penaltyRecord(returnsIDU.getText());
+//                booksFile.aumentar(returnsIDU.getText(),file2);
+            }else{
+                rbFile.deleteRecord(returnsIDU.getText());
+//                booksFile.aumentar(returnsIDU.getText(),file2);
+            }
         }else{
             JOptionPane.showMessageDialog(null, "El usuario no tiene devoluciones pendientes");
+        }
         }
         limpiaTabla();
         readRBData();
@@ -397,6 +452,8 @@ public class Interfaz extends javax.swing.JFrame {
         jLabel35 = new javax.swing.JLabel();
         jLabel36 = new javax.swing.JLabel();
         jTextField6 = new javax.swing.JTextField();
+        dateReq1 = new javax.swing.JTextField();
+        noexistAV1 = new javax.swing.JLabel();
         OtherMaterial = new javax.swing.JPanel();
         reqtype = new javax.swing.JTextField();
         reqcompany = new javax.swing.JTextField();
@@ -441,6 +498,7 @@ public class Interfaz extends javax.swing.JFrame {
         jButtonReturn1 = new javax.swing.JButton();
         returnsIDU = new javax.swing.JTextField();
         jLabel27 = new javax.swing.JLabel();
+        dateToday1 = new javax.swing.JTextField();
         jLabel25 = new javax.swing.JLabel();
         toBooks2 = new javax.swing.JRadioButton();
         toOther2 = new javax.swing.JRadioButton();
@@ -449,6 +507,10 @@ public class Interfaz extends javax.swing.JFrame {
         Font = new javax.swing.JPanel();
         jLabel29 = new javax.swing.JLabel();
         jLabel30 = new javax.swing.JLabel();
+        ImageStudent = new javax.swing.JPanel();
+        jLabel38 = new javax.swing.JLabel();
+        ImageMaterial = new javax.swing.JPanel();
+        jLabel39 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -461,7 +523,7 @@ public class Interfaz extends javax.swing.JFrame {
         setTitle("BiblioTech");
         setBackground(new java.awt.Color(255, 204, 51));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        setPreferredSize(new java.awt.Dimension(762, 500));
+        setResizable(false);
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 153));
 
@@ -905,6 +967,8 @@ public class Interfaz extends javax.swing.JFrame {
 
         jTextField6.setFont(new java.awt.Font("Bahnschrift", 0, 18)); // NOI18N
 
+        noexistAV1.setForeground(new java.awt.Color(255, 0, 0));
+
         javax.swing.GroupLayout BookLayout = new javax.swing.GroupLayout(Book);
         Book.setLayout(BookLayout);
         BookLayout.setHorizontalGroup(
@@ -912,77 +976,106 @@ public class Interfaz extends javax.swing.JFrame {
             .addGroup(BookLayout.createSequentialGroup()
                 .addGroup(BookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(BookLayout.createSequentialGroup()
-                        .addGap(32, 32, 32)
-                        .addComponent(jTextSearch2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btn_search2))
-                    .addGroup(BookLayout.createSequentialGroup()
                         .addGap(24, 24, 24)
                         .addGroup(BookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(BookLayout.createSequentialGroup()
+                                .addComponent(jLabel35)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel31)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel23)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(numDays1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
-                                .addComponent(jLabel24))
+                                .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(BookLayout.createSequentialGroup()
                                 .addGroup(BookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jToggleButton2)
-                                    .addGroup(BookLayout.createSequentialGroup()
-                                        .addGroup(BookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(BookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addGroup(BookLayout.createSequentialGroup()
                                             .addComponent(jLabel33)
+                                            .addGap(24, 24, 24)
+                                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(BookLayout.createSequentialGroup()
                                             .addComponent(jLabel34)
-                                            .addComponent(jLabel36))
-                                        .addGap(18, 18, 18)
-                                        .addGroup(BookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                            .addGap(18, 18, 18)
+                                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                     .addGroup(BookLayout.createSequentialGroup()
-                                        .addComponent(jLabel35)
+                                        .addGap(1, 1, 1)
+                                        .addComponent(jLabel23)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 0, Short.MAX_VALUE)))))
-                .addGap(41, 41, 41))
+                                        .addComponent(numDays1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jLabel24)))
+                                .addGroup(BookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(BookLayout.createSequentialGroup()
+                                        .addGap(14, 14, 14)
+                                        .addComponent(jLabel36)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(BookLayout.createSequentialGroup()
+                                        .addGap(20, 20, 20)
+                                        .addComponent(dateReq1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(BookLayout.createSequentialGroup()
+                                .addGap(1, 1, 1)
+                                .addComponent(noexistAV1, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(BookLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jToggleButton2)))
+                .addGap(0, 70, Short.MAX_VALUE))
+            .addGroup(BookLayout.createSequentialGroup()
+                .addGap(32, 32, 32)
+                .addComponent(jTextSearch2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btn_search2)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         BookLayout.setVerticalGroup(
             BookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(BookLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(BookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextSearch2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_search2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(BookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel33)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(12, 12, 12)
-                .addGroup(BookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel34)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(BookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel35)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(7, 7, 7)
-                .addGroup(BookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel36)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(BookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(BookLayout.createSequentialGroup()
+                        .addGroup(BookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jTextSearch2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btn_search2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(BookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel33)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(5, 5, 5)
+                        .addGroup(BookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel34, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                    .addGroup(BookLayout.createSequentialGroup()
+                        .addGroup(BookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel36)
+                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(37, 37, 37)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(BookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel31)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel24)
-                    .addComponent(jLabel23)
-                    .addComponent(numDays1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGroup(BookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(BookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel35)
+                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel31)
+                        .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(BookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(BookLayout.createSequentialGroup()
+                        .addGroup(BookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel24)
+                            .addComponent(jLabel23)
+                            .addComponent(numDays1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(BookLayout.createSequentialGroup()
+                        .addGap(0, 5, Short.MAX_VALUE)
+                        .addComponent(dateReq1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(noexistAV1, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(4, 4, 4)
                 .addComponent(jToggleButton2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
+
+        BookLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jTextField2, jTextField3, jTextField4, jTextField5, jTextField6});
 
         OtherMaterial.setBackground(new java.awt.Color(255, 255, 153));
 
@@ -1139,7 +1232,6 @@ public class Interfaz extends javax.swing.JFrame {
             .addGroup(SolicitarLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(SolicitarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Book, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(SolicitarLayout.createSequentialGroup()
                         .addComponent(jLabel37)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -1149,7 +1241,8 @@ public class Interfaz extends javax.swing.JFrame {
                         .addGap(28, 28, 28)
                         .addComponent(jLabel17)
                         .addGap(18, 18, 18)
-                        .addComponent(toOther1)))
+                        .addComponent(toOther1))
+                    .addComponent(Book, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(SolicitarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(SolicitarLayout.createSequentialGroup()
@@ -1270,11 +1363,11 @@ public class Interfaz extends javax.swing.JFrame {
                     .addGroup(CarneLayout.createSequentialGroup()
                         .addGap(91, 91, 91)
                         .addComponent(check)))
-                .addContainerGap(77, Short.MAX_VALUE))
+                .addContainerGap(75, Short.MAX_VALUE))
             .addGroup(CarneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, CarneLayout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(notexist1, javax.swing.GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE)
+                    .addComponent(notexist1, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE)
                     .addContainerGap()))
         );
         CarneLayout.setVerticalGroup(
@@ -1322,7 +1415,7 @@ public class Interfaz extends javax.swing.JFrame {
             TablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, TablaLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 368, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE))
         );
 
         Devoluciones.setBackground(new java.awt.Color(255, 255, 153));
@@ -1381,7 +1474,7 @@ public class Interfaz extends javax.swing.JFrame {
                 .addComponent(noexistReq, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonReturn)
-                .addContainerGap(95, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         DB.setBackground(new java.awt.Color(255, 255, 153));
@@ -1411,20 +1504,24 @@ public class Interfaz extends javax.swing.JFrame {
                         .addGap(131, 131, 131)
                         .addComponent(jButtonReturn1))
                     .addGroup(DBLayout.createSequentialGroup()
-                        .addGap(40, 40, 40)
+                        .addGap(31, 31, 31)
                         .addGroup(DBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel27, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(returnsIDU))))
-                .addContainerGap(161, Short.MAX_VALUE))
+                            .addComponent(returnsIDU, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(37, 37, 37)
+                        .addComponent(dateToday1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(63, Short.MAX_VALUE))
         );
         DBLayout.setVerticalGroup(
             DBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(DBLayout.createSequentialGroup()
-                .addGap(6, 6, 6)
+                .addGap(20, 20, 20)
                 .addComponent(jLabel27)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(returnsIDU, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(45, 45, 45)
+                .addGroup(DBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(returnsIDU, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(dateToday1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
                 .addComponent(jButtonReturn1)
                 .addContainerGap(97, Short.MAX_VALUE))
         );
@@ -1537,6 +1634,48 @@ public class Interfaz extends javax.swing.JFrame {
                 .addGap(37, 37, 37))
         );
 
+        ImageStudent.setBackground(new java.awt.Color(255, 255, 153));
+
+        jLabel38.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/user.png"))); // NOI18N
+
+        javax.swing.GroupLayout ImageStudentLayout = new javax.swing.GroupLayout(ImageStudent);
+        ImageStudent.setLayout(ImageStudentLayout);
+        ImageStudentLayout.setHorizontalGroup(
+            ImageStudentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ImageStudentLayout.createSequentialGroup()
+                .addGap(35, 35, 35)
+                .addComponent(jLabel38)
+                .addContainerGap(61, Short.MAX_VALUE))
+        );
+        ImageStudentLayout.setVerticalGroup(
+            ImageStudentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ImageStudentLayout.createSequentialGroup()
+                .addGap(50, 50, 50)
+                .addComponent(jLabel38)
+                .addContainerGap(73, Short.MAX_VALUE))
+        );
+
+        ImageMaterial.setBackground(new java.awt.Color(255, 255, 153));
+
+        jLabel39.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/material.png"))); // NOI18N
+
+        javax.swing.GroupLayout ImageMaterialLayout = new javax.swing.GroupLayout(ImageMaterial);
+        ImageMaterial.setLayout(ImageMaterialLayout);
+        ImageMaterialLayout.setHorizontalGroup(
+            ImageMaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ImageMaterialLayout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addComponent(jLabel39)
+                .addContainerGap(60, Short.MAX_VALUE))
+        );
+        ImageMaterialLayout.setVerticalGroup(
+            ImageMaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ImageMaterialLayout.createSequentialGroup()
+                .addGap(63, 63, 63)
+                .addComponent(jLabel39)
+                .addContainerGap(105, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -1561,10 +1700,10 @@ public class Interfaz extends javax.swing.JFrame {
                     .addComponent(Solicitar, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(412, Short.MAX_VALUE)))
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addGap(0, 171, Short.MAX_VALUE)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                    .addContainerGap(225, Short.MAX_VALUE)
                     .addComponent(Carne, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 279, Short.MAX_VALUE)))
+                    .addContainerGap(247, Short.MAX_VALUE)))
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
                     .addGap(225, 225, 225)
@@ -1580,6 +1719,16 @@ public class Interfaz extends javax.swing.JFrame {
                     .addContainerGap()
                     .addComponent(Font, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                    .addContainerGap(400, Short.MAX_VALUE)
+                    .addComponent(ImageStudent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap()))
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                    .addContainerGap(405, Short.MAX_VALUE)
+                    .addComponent(ImageMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap()))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1603,10 +1752,10 @@ public class Interfaz extends javax.swing.JFrame {
                     .addComponent(Solicitar, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(27, Short.MAX_VALUE)))
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addGap(0, 105, Short.MAX_VALUE)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                    .addContainerGap(105, Short.MAX_VALUE)
                     .addComponent(Carne, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 106, Short.MAX_VALUE)))
+                    .addContainerGap(128, Short.MAX_VALUE)))
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
                     .addGap(105, 105, 105)
@@ -1621,6 +1770,16 @@ public class Interfaz extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createSequentialGroup()
                     .addContainerGap()
                     .addComponent(Font, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                    .addContainerGap(22, Short.MAX_VALUE)
+                    .addComponent(ImageStudent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(23, Short.MAX_VALUE)))
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(ImageMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
@@ -1647,7 +1806,7 @@ public class Interfaz extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("Solicitar");
+        jMenu2.setText("Prestamos");
 
         jMenuItem3.setText("Solicitar Material");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
@@ -1679,7 +1838,7 @@ public class Interfaz extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 401, Short.MAX_VALUE)
+            .addGap(0, 446, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -1727,26 +1886,34 @@ public class Interfaz extends javax.swing.JFrame {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         Student.setVisible(true);
+        ImageStudent.setVisible(true);
+        ImageMaterial.setVisible(false);
         Font.setVisible(false);
         Material.setVisible(false);
         Solicitar.setVisible(false);
         Carne.setVisible(false);
+        Carne1.setVisible(false);
         Solicitar.setVisible(false);
         Tabla.setVisible(false);
         DB.setVisible(false);
         DAV.setVisible(false);
+        Devoluciones.setVisible(false);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         Material.setVisible(true);
+        ImageMaterial.setVisible(true);
+        ImageStudent.setVisible(false);
         Font.setVisible(false);
         Student.setVisible(false);
         Solicitar.setVisible(false);
         Carne.setVisible(false);
+        Carne1.setVisible(false);
         Solicitar.setVisible(false);
         Tabla.setVisible(false);
         DB.setVisible(false);
         DAV.setVisible(false);
+        Devoluciones.setVisible(false);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jTextTitleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextTitleActionPerformed
@@ -1754,7 +1921,11 @@ public class Interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextTitleActionPerformed
 
     private void addBooksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBooksActionPerformed
-        addBooks();
+        try {
+            addBooks();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_addBooksActionPerformed
 
     private void addOthersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addOthersActionPerformed
@@ -1774,6 +1945,8 @@ public class Interfaz extends javax.swing.JFrame {
         Tabla.setVisible(false);
         Carne1.setVisible(false);
         Devoluciones.setVisible(false);
+        ImageMaterial.setVisible(false);
+        ImageStudent.setVisible(false);
         limpiaTabla();
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
@@ -1802,6 +1975,8 @@ public class Interfaz extends javax.swing.JFrame {
         toBooks.setSelected(false);
         toBooks1.setSelected(false);
         toBooks2.setSelected(false);
+        ImageMaterial.setVisible(false);
+        ImageStudent.setVisible(false);
         limpiaTabla();
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
@@ -1834,7 +2009,13 @@ public class Interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextSearch2ActionPerformed
 
     private void btn_search2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_search2ActionPerformed
-        // TODO add your handling code here:
+        try {
+            searchBooks();
+        } catch (IOException ex) {
+            Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btn_search2ActionPerformed
 
     private void toBooks1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toBooks1ActionPerformed
@@ -1843,12 +2024,16 @@ public class Interfaz extends javax.swing.JFrame {
             toBooks2();
         } catch (IOException ex) {
             Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
         }
         toOther1.setSelected(false);
         limpiaTabla();
         try {
-            readAudiovisualData();
+            readBooksData();
         } catch (IOException ex) {
+            Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
             Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_toBooks1ActionPerformed
@@ -1884,6 +2069,8 @@ public class Interfaz extends javax.swing.JFrame {
             addRB();
         } catch (IOException ex) {
             Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jToggleButton2ActionPerformed
 
@@ -1901,6 +2088,10 @@ public class Interfaz extends javax.swing.JFrame {
         try {
             returnsRB();
         } catch (IOException ex) {
+            Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
             Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButtonReturn1ActionPerformed
@@ -1991,6 +2182,8 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JPanel DB;
     private javax.swing.JPanel Devoluciones;
     private javax.swing.JPanel Font;
+    private javax.swing.JPanel ImageMaterial;
+    private javax.swing.JPanel ImageStudent;
     private javax.swing.JPanel Material;
     private javax.swing.JPanel OtherMaterial;
     private javax.swing.JPanel Others;
@@ -2004,7 +2197,9 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JToggleButton check;
     private javax.swing.JToggleButton check1;
     private javax.swing.JTextField dateReq;
+    private javax.swing.JTextField dateReq1;
     private javax.swing.JTextField dateToday;
+    private javax.swing.JTextField dateToday1;
     private javax.swing.JToggleButton jButtonAdd;
     private javax.swing.JButton jButtonReturn;
     private javax.swing.JButton jButtonReturn1;
@@ -2040,6 +2235,8 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel37;
+    private javax.swing.JLabel jLabel38;
+    private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -2079,6 +2276,7 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JLabel nameShow;
     private javax.swing.JLabel nameShow1;
     private javax.swing.JLabel noexistAV;
+    private javax.swing.JLabel noexistAV1;
     private javax.swing.JLabel noexistReq;
     private javax.swing.JLabel notexist;
     private javax.swing.JLabel notexist1;
