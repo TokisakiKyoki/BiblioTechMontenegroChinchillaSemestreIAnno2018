@@ -30,7 +30,6 @@ public class Interfaz extends javax.swing.JFrame {
     File file3 = new File("./audiovisual.dat");
     File file4 = new File("./rav.dat");
     File file5 = new File("./rb.dat");
-    File file6 = new File("./penalty.dat");
     StudentFile studentfile = new StudentFile(file1);
     BooksFile booksFile = new BooksFile();
     AudiovisualFile audiovisualFile = new AudiovisualFile(file3);
