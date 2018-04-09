@@ -458,6 +458,7 @@ public class Interfaz extends javax.swing.JFrame {
         jTextField6 = new javax.swing.JTextField();
         dateReq1 = new javax.swing.JTextField();
         noexistAV1 = new javax.swing.JLabel();
+        jLabel40 = new javax.swing.JLabel();
         OtherMaterial = new javax.swing.JPanel();
         reqtype = new javax.swing.JTextField();
         reqcompany = new javax.swing.JTextField();
@@ -473,6 +474,7 @@ public class Interfaz extends javax.swing.JFrame {
         jLabel22 = new javax.swing.JLabel();
         noexistAV = new javax.swing.JLabel();
         dateReq = new javax.swing.JTextField();
+        jLabel41 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
         toBooks1 = new javax.swing.JRadioButton();
         toOther1 = new javax.swing.JRadioButton();
@@ -498,11 +500,13 @@ public class Interfaz extends javax.swing.JFrame {
         jLabel28 = new javax.swing.JLabel();
         noexistReq = new javax.swing.JLabel();
         dateToday = new javax.swing.JTextField();
+        jLabel42 = new javax.swing.JLabel();
         DB = new javax.swing.JPanel();
         jButtonReturn1 = new javax.swing.JButton();
         returnsIDU = new javax.swing.JTextField();
         jLabel27 = new javax.swing.JLabel();
         dateToday1 = new javax.swing.JTextField();
+        jLabel43 = new javax.swing.JLabel();
         jLabel25 = new javax.swing.JLabel();
         toBooks2 = new javax.swing.JRadioButton();
         toOther2 = new javax.swing.JRadioButton();
@@ -973,6 +977,8 @@ public class Interfaz extends javax.swing.JFrame {
 
         noexistAV1.setForeground(new java.awt.Color(255, 0, 0));
 
+        jLabel40.setText("Fecha de solicitud");
+
         javax.swing.GroupLayout BookLayout = new javax.swing.GroupLayout(Book);
         Book.setLayout(BookLayout);
         BookLayout.setHorizontalGroup(
@@ -983,43 +989,42 @@ public class Interfaz extends javax.swing.JFrame {
                         .addGap(24, 24, 24)
                         .addGroup(BookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(BookLayout.createSequentialGroup()
-                                .addComponent(jLabel35)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel31)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(BookLayout.createSequentialGroup()
-                                .addGroup(BookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(BookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addGroup(BookLayout.createSequentialGroup()
-                                            .addComponent(jLabel33)
-                                            .addGap(24, 24, 24)
-                                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(BookLayout.createSequentialGroup()
-                                            .addComponent(jLabel34)
-                                            .addGap(18, 18, 18)
-                                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(BookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(BookLayout.createSequentialGroup()
-                                        .addGap(1, 1, 1)
+                                        .addComponent(jLabel33)
+                                        .addGap(24, 24, 24)
+                                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(BookLayout.createSequentialGroup()
+                                        .addComponent(jLabel34)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(14, 14, 14)
+                                .addComponent(jLabel36)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(BookLayout.createSequentialGroup()
+                                .addGap(1, 1, 1)
+                                .addGroup(BookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(noexistAV1, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(BookLayout.createSequentialGroup()
                                         .addComponent(jLabel23)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(numDays1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jLabel24)))
-                                .addGroup(BookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(BookLayout.createSequentialGroup()
-                                        .addGap(14, 14, 14)
-                                        .addComponent(jLabel36)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(BookLayout.createSequentialGroup()
-                                        .addGap(20, 20, 20)
-                                        .addComponent(dateReq1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addComponent(jLabel24))))
+                            .addGroup(BookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel40)
+                                .addGroup(BookLayout.createSequentialGroup()
+                                    .addComponent(jLabel35)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(jLabel31)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(BookLayout.createSequentialGroup()
-                                .addGap(1, 1, 1)
-                                .addComponent(noexistAV1, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(167, 167, 167)
+                                .addComponent(dateReq1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(BookLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jToggleButton2)))
@@ -1061,22 +1066,22 @@ public class Interfaz extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel31)
                         .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(BookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel24)
+                    .addComponent(jLabel23)
+                    .addComponent(numDays1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel40))
                 .addGroup(BookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(BookLayout.createSequentialGroup()
-                        .addGroup(BookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel24)
-                            .addComponent(jLabel23)
-                            .addComponent(numDays1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                        .addComponent(noexistAV1, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(4, 4, 4)
+                        .addComponent(jToggleButton2)
+                        .addContainerGap(40, Short.MAX_VALUE))
                     .addGroup(BookLayout.createSequentialGroup()
-                        .addGap(0, 5, Short.MAX_VALUE)
-                        .addComponent(dateReq1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(noexistAV1, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(4, 4, 4)
-                .addComponent(jToggleButton2)
-                .addContainerGap(40, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(dateReq1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         BookLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jTextField2, jTextField3, jTextField4, jTextField5, jTextField6});
@@ -1134,6 +1139,8 @@ public class Interfaz extends javax.swing.JFrame {
 
         noexistAV.setForeground(new java.awt.Color(255, 0, 0));
 
+        jLabel41.setText("Fecha de solicitud");
+
         javax.swing.GroupLayout OtherMaterialLayout = new javax.swing.GroupLayout(OtherMaterial);
         OtherMaterial.setLayout(OtherMaterialLayout);
         OtherMaterialLayout.setHorizontalGroup(
@@ -1166,8 +1173,10 @@ public class Interfaz extends javax.swing.JFrame {
                             .addGroup(OtherMaterialLayout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel22)
-                                .addGap(40, 40, 40)
-                                .addComponent(dateReq, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addGroup(OtherMaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(dateReq, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel41))
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(OtherMaterialLayout.createSequentialGroup()
                         .addGroup(OtherMaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1196,15 +1205,22 @@ public class Interfaz extends javax.swing.JFrame {
                     .addComponent(jLabel20))
                 .addGap(3, 3, 3)
                 .addComponent(noexistAV, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(OtherMaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(numDays, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel21)
-                    .addComponent(jLabel22)
-                    .addComponent(dateReq, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jToggleButton1)
-                .addGap(19, 19, 19))
+                .addGroup(OtherMaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(OtherMaterialLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(OtherMaterialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(numDays, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel21)
+                            .addComponent(jLabel22))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                        .addComponent(jToggleButton1)
+                        .addGap(19, 19, 19))
+                    .addGroup(OtherMaterialLayout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(jLabel41)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(dateReq, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         jLabel17.setFont(new java.awt.Font("Bahnschrift", 0, 18)); // NOI18N
@@ -1266,8 +1282,8 @@ public class Interfaz extends javax.swing.JFrame {
                     .addComponent(jLabel17)
                     .addComponent(toBooks1)
                     .addComponent(toOther1))
-                .addGap(18, 34, Short.MAX_VALUE)
-                .addComponent(Book, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, Short.MAX_VALUE)
+                .addComponent(Book, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15))
             .addGroup(SolicitarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, SolicitarLayout.createSequentialGroup()
@@ -1445,6 +1461,8 @@ public class Interfaz extends javax.swing.JFrame {
 
         noexistReq.setForeground(new java.awt.Color(255, 0, 0));
 
+        jLabel42.setText("Fecha de devolución");
+
         javax.swing.GroupLayout DAVLayout = new javax.swing.GroupLayout(DAV);
         DAV.setLayout(DAVLayout);
         DAVLayout.setHorizontalGroup(
@@ -1457,19 +1475,27 @@ public class Interfaz extends javax.swing.JFrame {
                     .addGroup(DAVLayout.createSequentialGroup()
                         .addGap(33, 33, 33)
                         .addGroup(DAVLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel28)
+                            .addComponent(noexistReq, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, DAVLayout.createSequentialGroup()
-                                .addComponent(returnsIDU1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(61, 61, 61)
-                                .addComponent(dateToday, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(noexistReq, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGroup(DAVLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, DAVLayout.createSequentialGroup()
+                                        .addComponent(returnsIDU1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(61, 61, 61))
+                                    .addGroup(DAVLayout.createSequentialGroup()
+                                        .addComponent(jLabel28)
+                                        .addGap(63, 63, 63)))
+                                .addGroup(DAVLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel42)
+                                    .addComponent(dateToday, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addContainerGap(58, Short.MAX_VALUE))
         );
         DAVLayout.setVerticalGroup(
             DAVLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(DAVLayout.createSequentialGroup()
                 .addGap(31, 31, 31)
-                .addComponent(jLabel28)
+                .addGroup(DAVLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel28)
+                    .addComponent(jLabel42))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(DAVLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(dateToday)
@@ -1478,7 +1504,7 @@ public class Interfaz extends javax.swing.JFrame {
                 .addComponent(noexistReq, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonReturn)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(95, Short.MAX_VALUE))
         );
 
         DB.setBackground(new java.awt.Color(255, 255, 153));
@@ -1498,6 +1524,8 @@ public class Interfaz extends javax.swing.JFrame {
         jLabel27.setFont(new java.awt.Font("Bahnschrift", 0, 18)); // NOI18N
         jLabel27.setText("Ingrese el ISBN");
 
+        jLabel43.setText("Fecha de devolución");
+
         javax.swing.GroupLayout DBLayout = new javax.swing.GroupLayout(DB);
         DB.setLayout(DBLayout);
         DBLayout.setHorizontalGroup(
@@ -1513,14 +1541,18 @@ public class Interfaz extends javax.swing.JFrame {
                             .addComponent(jLabel27, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(returnsIDU, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(37, 37, 37)
-                        .addComponent(dateToday1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(DBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(dateToday1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel43))))
                 .addContainerGap(63, Short.MAX_VALUE))
         );
         DBLayout.setVerticalGroup(
             DBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(DBLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(jLabel27)
+                .addGroup(DBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel27)
+                    .addComponent(jLabel43))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(DBLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(returnsIDU, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -2244,6 +2276,10 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel40;
+    private javax.swing.JLabel jLabel41;
+    private javax.swing.JLabel jLabel42;
+    private javax.swing.JLabel jLabel43;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
