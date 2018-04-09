@@ -89,5 +89,33 @@ public class BooksFile {
         return book;
     }
     
+    public void disminuir(String isbn,  File file) throws IOException, ClassNotFoundException{
+        Books bTemp;
+        List<Books> arrayList = readBooksFile(file);
+        for (int i = 0; i <arrayList.size(); i++) {
+            bTemp = arrayList.get(i);
+            if (bTemp.getIsbn().equals(isbn)) {
+                bTemp.setAvailable(bTemp.getAvailable()-1);
+                
+            }
+        }
+        FileOutputStream fos = new FileOutputStream(file);
+        ObjectOutputStream oos = new ObjectOutputStream(fos); 
+        oos.writeUnshared(arrayList); 
+    }
     
+    public void aumentar(String isbn, File file) throws IOException, ClassNotFoundException{
+        Books bTemp;
+        List<Books> arrayList = readBooksFile(file);
+        for (int i = 0; i <arrayList.size(); i++) {
+            bTemp = arrayList.get(i);
+            if (bTemp.getIsbn().equals(isbn)) {
+                bTemp.setAvailable(bTemp.getAvailable()+1);
+    
+            }
+        }
+        FileOutputStream fos = new FileOutputStream(file);
+        ObjectOutputStream oos = new ObjectOutputStream(fos); 
+        oos.writeUnshared(arrayList);    
+    }
 }

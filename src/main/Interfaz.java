@@ -165,7 +165,7 @@ public class Interfaz extends javax.swing.JFrame {
         int cant = 1;//falta ingresar la cantidad
         Books book = booksFile.getPerson(jTextISBN.getText(), file2);
         if (book.getIsbn().equals(jTextISBN.getText())) {
-            
+            booksFile.aumentar(jTextISBN.getText(), file2);
         }else{
             Books b = new Books(jTextISBN.getText(), jTextTitle.getText(), jTextAuthor.getText(), 
                 Integer.parseInt(jTextEdition.getText()), Integer.parseInt(jTextYear.getText()), cant);
@@ -314,7 +314,7 @@ public class Interfaz extends javax.swing.JFrame {
                 Integer.parseInt((String)numDays1.getSelectedItem()), dateReq1.getText());
         if (cant>0) {
             rbFile.addEndRecord(rb);
-//            booksFile.disminuir(jTextSearch2.getText(),file2);
+            booksFile.disminuir(jTextSearch2.getText(),file2);
         }else{
             noexistAV1.setText("No hay recursos disponibles");
         }
@@ -378,10 +378,10 @@ public class Interfaz extends javax.swing.JFrame {
             int a = rbFile.searchDays(returnsIDU.getText(), day);
             if (day>a){
                 rbFile.penaltyRecord(returnsIDU.getText());
-//                booksFile.aumentar(returnsIDU.getText(),file2);
+                booksFile.aumentar(returnsIDU.getText(),file2);
             }else{
                 rbFile.deleteRecord(returnsIDU.getText());
-//                booksFile.aumentar(returnsIDU.getText(),file2);
+                booksFile.aumentar(returnsIDU.getText(),file2);
             }
         }else{
             JOptionPane.showMessageDialog(null, "El usuario no tiene devoluciones pendientes");
