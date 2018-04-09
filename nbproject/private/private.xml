@@ -5,7 +5,7 @@
             <url>src/file/AudiovisualFile.java</url>
             <bookmark id="1">
                 <name/>
-                <line>158</line>
+                <line>156</line>
                 <key/>
             </bookmark>
         </file>
@@ -14,13 +14,9 @@
         <group>
             <file>file:/C:/Users/TokisakiKuro/Downloads/Telegram%20Desktop/BiblioTechMontenegroChinchillaSemestreIAnno2018/src/file/BooksFile.java</file>
             <file>file:/C:/Users/TokisakiKuro/Downloads/Telegram%20Desktop/BiblioTechMontenegroChinchillaSemestreIAnno2018/src/main/Interfaz.java</file>
-            <file>file:/C:/Users/TokisakiKuro/Downloads/Telegram%20Desktop/BiblioTechMontenegroChinchillaSemestreIAnno2018/src/domain/RequestAudiovisual.java</file>
-            <file>file:/C:/Users/TokisakiKuro/Downloads/Telegram%20Desktop/BiblioTechMontenegroChinchillaSemestreIAnno2018/src/domain/Books.java</file>
-            <file>file:/C:/Users/TokisakiKuro/Downloads/Telegram%20Desktop/BiblioTechMontenegroChinchillaSemestreIAnno2018/src/domain/Material.java</file>
+            <file>file:/C:/Users/TokisakiKuro/Downloads/Telegram%20Desktop/BiblioTechMontenegroChinchillaSemestreIAnno2018/src/file/StudentFile.java</file>
             <file>file:/C:/Users/TokisakiKuro/Downloads/Telegram%20Desktop/BiblioTechMontenegroChinchillaSemestreIAnno2018/src/file/RequestBooksFile.java</file>
-            <file>file:/C:/Users/TokisakiKuro/Downloads/Telegram%20Desktop/BiblioTechMontenegroChinchillaSemestreIAnno2018/src/domain/RequestBooks.java</file>
             <file>file:/C:/Users/TokisakiKuro/Downloads/Telegram%20Desktop/BiblioTechMontenegroChinchillaSemestreIAnno2018/src/file/AudiovisualFile.java</file>
-            <file>file:/C:/Users/TokisakiKuro/Downloads/Telegram%20Desktop/BiblioTechMontenegroChinchillaSemestreIAnno2018/src/domain/Audiovisual.java</file>
             <file>file:/C:/Users/TokisakiKuro/Downloads/Telegram%20Desktop/BiblioTechMontenegroChinchillaSemestreIAnno2018/src/file/RequestAudiovisualFile.java</file>
         </group>
     </open-files>

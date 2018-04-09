@@ -161,11 +161,16 @@ public class Interfaz extends javax.swing.JFrame {
         jTextAddress.setText("");
     }
     
-    private void addBooks() throws ClassNotFoundException{
+    private void addBooks() throws ClassNotFoundException, IOException{
         int cant = 1;//falta ingresar la cantidad
-        Books b = new Books(jTextISBN.getText(), jTextTitle.getText(), jTextAuthor.getText(), 
+        Books book = booksFile.getPerson(jTextISBN.getText(), file2);
+        if (book.getIsbn().equals(jTextISBN.getText())) {
+            
+        }else{
+            Books b = new Books(jTextISBN.getText(), jTextTitle.getText(), jTextAuthor.getText(), 
                 Integer.parseInt(jTextEdition.getText()), Integer.parseInt(jTextYear.getText()), cant);
-        booksFile.writeBooksFile(b,file2);
+            booksFile.writeBooksFile(b,file2);
+        }
         
         jTextISBN.setText("");
         jTextTitle.setText("");
@@ -1923,6 +1928,8 @@ public class Interfaz extends javax.swing.JFrame {
         try {
             addBooks();
         } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
             Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_addBooksActionPerformed
