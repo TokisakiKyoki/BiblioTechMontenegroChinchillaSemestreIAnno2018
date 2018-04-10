@@ -89,7 +89,7 @@ public class BooksFile {
         return book;
     }
     
-    public void disminuir(String isbn,  File file) throws IOException, ClassNotFoundException{
+    public void decrease(String isbn,  File file) throws IOException, ClassNotFoundException{
         Books bTemp;
         List<Books> arrayList = readBooksFile(file);
         for (int i = 0; i <arrayList.size(); i++) {
@@ -104,7 +104,7 @@ public class BooksFile {
         oos.writeUnshared(arrayList); 
     }
     
-    public void aumentar(String isbn, File file) throws IOException, ClassNotFoundException{
+    public void increase(String isbn, File file) throws IOException, ClassNotFoundException{
         Books bTemp;
         List<Books> arrayList = readBooksFile(file);
         for (int i = 0; i <arrayList.size(); i++) {

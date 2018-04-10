@@ -44,8 +44,8 @@ public class Interfaz extends javax.swing.JFrame {
     DefaultTableModel dtm3 = new DefaultTableModel(null, titlesRequest);
     DefaultTableModel dtm4 = new DefaultTableModel(null, titlesRequest);
     
-    ArrayList<RequestAudiovisual> myArrayList = ravFile.getAllRAV();
-    ArrayList<RequestBooks> myArrayList2 = rbFile.getAllRB();
+    ArrayList<RequestAudiovisual> ravList = ravFile.getAllRAV();
+    ArrayList<RequestBooks> rbList2 = rbFile.getAllRB();
     
     SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
     Date today = new Date();
@@ -57,13 +57,13 @@ public class Interfaz extends javax.swing.JFrame {
     public void readAudiovisualData() throws IOException{
         
         String datos[] = new String[4];
-        ArrayList<Audiovisual> myArrayList = audiovisualFile.getAllAudiovisual();
+        ArrayList<Audiovisual> audiovisualList = audiovisualFile.getAllAudiovisual();
         
-        for (int i = 0; i < myArrayList.size(); i++) {
-            datos[0] = myArrayList.get(i).getId();
-            datos[1] = myArrayList.get(i).getObject();
-            datos[2] = myArrayList.get(i).getCompany();
-            datos[3] = Integer.toString(myArrayList.get(i).getAvailable());
+        for (int i = 0; i < audiovisualList.size(); i++) {
+            datos[0] = audiovisualList.get(i).getId();
+            datos[1] = audiovisualList.get(i).getObject();
+            datos[2] = audiovisualList.get(i).getCompany();
+            datos[3] = Integer.toString(audiovisualList.get(i).getAvailable());
             dtm2.addRow(datos);
         }
         jTable1.setModel(dtm2);
@@ -91,12 +91,12 @@ public class Interfaz extends javax.swing.JFrame {
     public void readRAVData() throws IOException{
         
         String datos[] = new String[4];
-        myArrayList = ravFile.getAllRAV();
-        for (int i = 0; i < myArrayList.size(); i++) {
-            datos[0] = myArrayList.get(i).getIDU();
-            datos[1] = myArrayList.get(i).getId();
-            datos[2] = Integer.toString(myArrayList.get(i).getDays());
-            datos[3] = myArrayList.get(i).getDate();
+        ravList = ravFile.getAllRAV();
+        for (int i = 0; i < ravList.size(); i++) {
+            datos[0] = ravList.get(i).getIDU();
+            datos[1] = ravList.get(i).getId();
+            datos[2] = Integer.toString(ravList.get(i).getDays());
+            datos[3] = ravList.get(i).getDate();
             dtm3.addRow(datos);
         }
         jTable1.setModel(dtm3);
@@ -106,12 +106,12 @@ public class Interfaz extends javax.swing.JFrame {
     public void readRBData() throws IOException{
         
         String datos[] = new String[4];
-        myArrayList2 = rbFile.getAllRB();
-        for (int i = 0; i < myArrayList2.size(); i++) {
-            datos[0] = myArrayList2.get(i).getIDU();
-            datos[1] = myArrayList2.get(i).getIsbn();
-            datos[2] = Integer.toString(myArrayList2.get(i).getDays());
-            datos[3] = myArrayList2.get(i).getDate();
+        rbList2 = rbFile.getAllRB();
+        for (int i = 0; i < rbList2.size(); i++) {
+            datos[0] = rbList2.get(i).getIDU();
+            datos[1] = rbList2.get(i).getIsbn();
+            datos[2] = Integer.toString(rbList2.get(i).getDays());
+            datos[3] = rbList2.get(i).getDate();
             dtm4.addRow(datos);
         }
         jTable1.setModel(dtm4);
@@ -165,7 +165,7 @@ public class Interfaz extends javax.swing.JFrame {
         int cant = 1;//falta ingresar la cantidad
         Books book = booksFile.getPerson(jTextISBN.getText(), file2);
         if (book.getIsbn().equals(jTextISBN.getText())) {
-            booksFile.aumentar(jTextISBN.getText(), file2);
+            booksFile.increase(jTextISBN.getText(), file2);
         }else{
             Books b = new Books(jTextISBN.getText(), jTextTitle.getText(), jTextAuthor.getText(), 
                 Integer.parseInt(jTextEdition.getText()), Integer.parseInt(jTextYear.getText()), cant);
@@ -314,7 +314,7 @@ public class Interfaz extends javax.swing.JFrame {
                 Integer.parseInt((String)numDays1.getSelectedItem()), dateReq1.getText());
         if (cant>0) {
             rbFile.addEndRecord(rb);
-            booksFile.disminuir(jTextSearch2.getText(),file2);
+            booksFile.decrease(jTextSearch2.getText(),file2);
         }else{
             noexistAV1.setText("No hay recursos disponibles");
         }
@@ -378,10 +378,10 @@ public class Interfaz extends javax.swing.JFrame {
             int a = rbFile.searchDays(returnsIDU.getText(), day);
             if (day>a){
                 rbFile.penaltyRecord(returnsIDU.getText());
-                booksFile.aumentar(returnsIDU.getText(),file2);
+                booksFile.increase(returnsIDU.getText(),file2);
             }else{
                 rbFile.deleteRecord(returnsIDU.getText());
-                booksFile.aumentar(returnsIDU.getText(),file2);
+                booksFile.increase(returnsIDU.getText(),file2);
             }
         }else{
             JOptionPane.showMessageDialog(null, "El usuario no tiene devoluciones pendientes");
